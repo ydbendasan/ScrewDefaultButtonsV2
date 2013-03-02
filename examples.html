@@ -7,31 +7,6 @@
 	<!--[if lt IE 9]>
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="js/jquery.screwdefaultbuttonsV2.js"></script>
-	
-	
-	<script type="text/javascript">
-		$(function(){
-		
-			$('input:radio').screwDefaultButtons({
-				image: 'url("images/radioSmall.jpg")',
-				width: 43,
-				height: 43
-			});
-			
-			$('input:checkbox').screwDefaultButtons({
-				image: 'url("images/checkboxSmall.jpg")',
-				width: 43,
-				height: 43
-			});
-
-			
-		
-		});
-	</script>
-	
 	<style>
 	
 		body {
@@ -59,8 +34,42 @@
 		button{
 			display: block;
 		}
+        .toggler {
+            background-image:url("images/multi-column-sprite.jpg");
+        }
 	
 	</style>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="js/jquery.screwdefaultbuttonsV2.js"></script>
+	
+	
+	<script type="text/javascript">
+		$(function(){
+		
+			$('input:radio').screwDefaultButtons({
+				image: 'url("images/radioSmall.jpg")',
+				width: 43,
+				height: 43
+			});
+			
+			$('input:checkbox').screwDefaultButtons({
+				image: 'url("images/checkboxSmall.jpg")',
+				width: 43,
+				height: 43
+			});
+			
+		    $(".toggler").screwDefaultButtons({		    	
+		    	height: 43,
+		    	width: 43,
+				col:4
+		    });
+			
+
+		});
+	</script>
+	
+
 	
 </head>
 <body>
@@ -192,7 +201,12 @@
 		
 	</div>
 	
-	
+	<div class="example">
+		<h2>Multi state button with data-attribute</h2>
+		
+		<input type="button" class="toggler" data-states="1;2;3;4" value="3">
+		
+	</div>	
 	
 	
 </body>

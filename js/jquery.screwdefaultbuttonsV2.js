@@ -17,16 +17,24 @@
 			var defaults = $.extend( {
 				image:	null,
 				width:	50,
-				height:	50,
+				height: 50,
+				col:1,
 				disabled: false
 			}, options);
 			
 			return this.each(function(){
 			
+			    var leftPos = -1 * (defaults.col - 1) * defaults.width;
+			    var uncheckedPos = 0;
+			    var checkedPos = -(defaults.height);
+			    
 				var $this = $(this);
 
-				var $thisImage = defaults.image;
-				var dataImage = $this.data('sdb-image');
+				var $thisImage = $this.css('background-image');
+			    if (defaults.image) {
+			        $thisImage = defaults.image;
+			    }
+			    var dataImage = $this.data('sdb-image');
 				if (dataImage){
 					$thisImage = dataImage;
 				}
@@ -44,15 +52,13 @@
 
 				$thisParent.addClass(buttonClass);
 				$thisParent.attr('onclick',buttonClick );
-				$thisParent.css({
-					'background-image': $thisImage,
-					width:	defaults.width,
-					height: defaults.height,
-					cursor: 'pointer'
-				});
+			    $thisParent.css({
+			        'background-image': $thisImage,
+			        width: defaults.width,
+			        height: defaults.height,
+			        cursor: 'pointer'
+			    }).css({ backgroundPosition: leftPos + 'px 0' });
 
-				var uncheckedPos = 0;
-				var checkedPos = -(defaults.height);
 				if ($this.is(':disabled')){
 					uncheckedPos = -(defaults.height * 2);
 					checkedPos = -(defaults.height * 3);
@@ -75,12 +81,12 @@
 				$this.on('resetBackground', function(){
 					if ($this.is(':checked')){
 						$thisParent.css({
-							backgroundPosition: '0 ' + checkedPos + "px"
+						    backgroundPosition: leftPos + 'px ' + checkedPos + "px"
 						});
 					}
 					else {
 						$thisParent.css({
-							backgroundPosition: '0 ' + uncheckedPos + "px"
+						    backgroundPosition: leftPos + 'px ' + uncheckedPos + "px"
 						});
 					}
 				});
@@ -101,13 +107,13 @@
 						if ($this.prop('checked')){
 							$this.prop("checked", false);
 							$thisParent.css({
-								backgroundPosition: '0 ' + uncheckedPos + "px"
+							    backgroundPosition: leftPos + 'px ' + uncheckedPos + "px"
 							});
 						}
 						else {
 							$this.prop("checked", true);
 							$thisParent.css({
-								backgroundPosition:  '0 ' + checkedPos + "px"
+							    backgroundPosition: leftPos + 'px ' + checkedPos + "px"
 							});
 						}
 					});
@@ -130,13 +136,13 @@
 						if ($this.prop('checked')){
 							$this.prop("checked", false);
 								$thisParent.css({
-									backgroundPosition:  '0 ' + uncheckedPos + "px"
+								    backgroundPosition: leftPos + 'px ' + uncheckedPos + "px"
 								});
 						}
 						else {
 							$this.prop("checked", true);
 								$thisParent.css({
-									backgroundPosition:  '0 ' + checkedPos + "px"
+								    backgroundPosition: leftPos + 'px ' + checkedPos + "px"
 								});
 							
 							var otherRadioBtns = $('input[name="'+ $thisName +'"]').not($this);
@@ -146,7 +152,7 @@
 					
 					$this.on('radioSwitch', function(){
 						$thisParent.css({
-							backgroundPosition: '0 ' + uncheckedPos  + "px"
+						    backgroundPosition: leftPos + 'px ' + uncheckedPos + "px"
 						});
 					
 					});
@@ -156,6 +162,41 @@
 					$thisLabel.on('click', function(){
 						$thisParent.trigger('click');
 					});
+				} else if ($this.is(':button')) {
+				    var states = $this.data("states").split(';');
+				    var curState = jQuery.inArray($this.val(), states);
+				    if (curState < 0) {
+				        curState = 0;
+				        $this.val(states[curState]);
+				    }
+				    var curPosition = -1 * curState * defaults.height;
+				    $thisParent.css({
+				        backgroundPosition: leftPos + 'px ' + curPosition + "px"
+				    });
+
+				    $thisParent.addClass('styledButton');
+
+				    $thisParent.on('click', function () {
+				        if (!($this.is(':disabled'))) {
+				            $this.change();
+				        }
+				    });
+
+
+				    $this.on('change', function () {
+
+				        curState++;// = curState++ % states.length;
+				        curState = curState % states.length;
+				        $this.val(states[curState]);
+
+				        curPosition = -1 * curState * defaults.height;
+				        $thisParent.css({
+				            backgroundPosition: leftPos + 'px ' + curPosition + "px"
+				        });
+
+
+				    });
+
 				}
 				
 				if(!$.support.leadingWhitespace){
